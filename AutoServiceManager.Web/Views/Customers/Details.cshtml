@@ -1,0 +1,106 @@
+﻿@model AutoServiceManager.Web.Models.Customer
+
+@{
+    ViewData["Title"] = "Customer Details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1>@Model.FullName</h1>
+        <p class="text-muted mb-0">Customer details and related records.</p>
+    </div>
+
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        Customer Information
+    </div>
+
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">First Name</dt>
+            <dd class="col-sm-9">@Model.FirstName</dd>
+
+            <dt class="col-sm-3">Last Name</dt>
+            <dd class="col-sm-9">@Model.LastName</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Phone</dt>
+            <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+            <dt class="col-sm-3">Address</dt>
+            <dd class="col-sm-9">@Model.Address</dd>
+
+            <dt class="col-sm-3">Created</dt>
+            <dd class="col-sm-9">@Model.RowCreatedDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</dd>
+
+            <dt class="col-sm-3">Modified</dt>
+            <dd class="col-sm-9">
+                @(Model.RowModifiedDate.HasValue
+                    ? Model.RowModifiedDate.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
+                    : "Not modified")
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                Vehicles
+            </div>
+
+            <div class="card-body">
+                @if (!Model.Vehicles.Any())
+                {
+                    <p class="text-muted mb-0">No vehicles registered for this customer.</p>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var vehicle in Model.Vehicles)
+                        {
+                            <li class="list-group-item">
+                                @vehicle.DisplayName - @vehicle.Vin
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                Service Orders
+            </div>
+
+            <div class="card-body">
+                @if (!Model.ServiceOrders.Any())
+                {
+                    <p class="text-muted mb-0">No service orders created for this customer.</p>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var serviceOrder in Model.ServiceOrders)
+                        {
+                            <li class="list-group-item">
+                                RO #@serviceOrder.Id - @serviceOrder.Status - @serviceOrder.GrandTotal.ToString("C")
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+</div>
