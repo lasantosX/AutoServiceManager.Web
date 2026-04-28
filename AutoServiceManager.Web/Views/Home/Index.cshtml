@@ -1,8 +1,130 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model AutoServiceManager.Web.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="mb-4">
+    <h1 class="display-6 fw-semibold">AutoService Manager</h1>
+    <p class="text-muted mb-0">
+        Dashboard overview for customers, vehicles, technicians, and service orders.
+    </p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted mb-1">Customers</p>
+                <h3 class="mb-0">@Model.TotalCustomers</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted mb-1">Vehicles</p>
+                <h3 class="mb-0">@Model.TotalVehicles</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted mb-1">Technicians</p>
+                <h3 class="mb-0">@Model.TotalTechnicians</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted mb-1">Open ROs</p>
+                <h3 class="mb-0">@Model.OpenServiceOrders</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted mb-1">Closed ROs</p>
+                <h3 class="mb-0">@Model.ClosedServiceOrders</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted mb-1">Revenue</p>
+                <h3 class="mb-0">@Model.TotalRevenue.ToString("C")</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="h4 mb-0">Recent Service Orders</h2>
+        <p class="text-muted mb-0">Latest repair/service orders created in the system.</p>
+    </div>
+
+    <a asp-controller="ServiceOrders" asp-action="Index" class="btn btn-outline-primary">
+        View All
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>RO #</th>
+                    <th>Customer</th>
+                    <th>Vehicle</th>
+                    <th>Technician</th>
+                    <th>Status</th>
+                    <th>Opened</th>
+                    <th>Total</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.RecentServiceOrders.Any())
+                {
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-4">
+                            No service orders created yet.
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var order in Model.RecentServiceOrders)
+                    {
+                        <tr>
+                            <td>RO #@order.Id</td>
+                            <td>@order.Customer?.FullName</td>
+                            <td>@order.Vehicle?.DisplayName</td>
+                            <td>@(order.Technician?.FullName ?? "Unassigned")</td>
+                            <td>
+                                <span class="badge bg-primary">@order.Status</span>
+                            </td>
+                            <td>@order.OpenedDate.ToLocalTime().ToString("yyyy-MM-dd")</td>
+                            <td>@order.GrandTotal.ToString("C")</td>
+                            <td class="text-end">
+                                <a asp-controller="ServiceOrders" asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-outline-info">
+                                    Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
