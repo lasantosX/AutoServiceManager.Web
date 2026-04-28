@@ -1,0 +1,51 @@
+﻿@model AutoServiceManager.Web.Models.Operation
+
+@{
+    ViewData["Title"] = "Delete Operation";
+}
+
+<h1>Delete Operation</h1>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete this operation?
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">RO #</dt>
+            <dd class="col-sm-9">@Model.ServiceOrderId</dd>
+
+            <dt class="col-sm-3">Customer</dt>
+            <dd class="col-sm-9">@Model.ServiceOrder?.Customer?.FullName</dd>
+
+            <dt class="col-sm-3">Vehicle</dt>
+            <dd class="col-sm-9">@Model.ServiceOrder?.Vehicle?.DisplayName</dd>
+
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+            <dt class="col-sm-3">Labor Hours</dt>
+            <dd class="col-sm-9">@Model.LaborHours</dd>
+
+            <dt class="col-sm-3">Labor Rate</dt>
+            <dd class="col-sm-9">@Model.LaborRate.ToString("C")</dd>
+
+            <dt class="col-sm-3">Labor Amount</dt>
+            <dd class="col-sm-9">@Model.LaborAmount.ToString("C")</dd>
+
+            <dt class="col-sm-3">Parts Amount</dt>
+            <dd class="col-sm-9">@Model.PartsAmount.ToString("C")</dd>
+
+            <dt class="col-sm-3">Total</dt>
+            <dd class="col-sm-9">@Model.TotalAmount.ToString("C")</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post" class="d-flex justify-content-end gap-2">
+            <input type="hidden" asp-for="Id" />
+
+            <a asp-controller="ServiceOrders" asp-action="Details" asp-route-id="@Model.ServiceOrderId" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-danger">Delete Operation</button>
+        </form>
+    </div>
+</div>
