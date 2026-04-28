@@ -69,6 +69,10 @@ public class ServiceOrdersController : Controller
             return NotFound();
         }
 
+        serviceOrder.Operations = serviceOrder.Operations
+            .OrderBy(operation => operation.Id)
+            .ToList();
+
         return View(serviceOrder);
     }
 

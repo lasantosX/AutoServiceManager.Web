@@ -1,0 +1,70 @@
+﻿@model AutoServiceManager.Web.Models.Operation
+
+@{
+    ViewData["Title"] = "Add Operation";
+    var serviceOrder = ViewBag.ServiceOrder as AutoServiceManager.Web.Models.ServiceOrder;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1>Add Operation</h1>
+        <p class="text-muted mb-0">
+            RO #@Model.ServiceOrderId - @serviceOrder?.Customer?.FullName - @serviceOrder?.Vehicle?.DisplayName
+        </p>
+    </div>
+
+    <a asp-controller="ServiceOrders" asp-action="Details" asp-route-id="@Model.ServiceOrderId" class="btn btn-outline-secondary">
+        Back to RO
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <input type="hidden" asp-for="ServiceOrderId" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <input asp-for="Description" class="form-control" placeholder="Example: Replace front brake pads" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="LaborHours" class="form-label"></label>
+                    <input asp-for="LaborHours" class="form-control" />
+                    <span asp-validation-for="LaborHours" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="LaborRate" class="form-label"></label>
+                    <input asp-for="LaborRate" class="form-control" />
+                    <span asp-validation-for="LaborRate" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="PartsAmount" class="form-label"></label>
+                    <input asp-for="PartsAmount" class="form-control" />
+                    <span asp-validation-for="PartsAmount" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                Labor amount and total amount will be calculated automatically after saving.
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <a asp-controller="ServiceOrders" asp-action="Details" asp-route-id="@Model.ServiceOrderId" class="btn btn-outline-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save Operation</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
